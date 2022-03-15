@@ -1,4 +1,4 @@
-const mainDiv = document.getElementById('main');
+const mainDiv = document.getElementById('root');
 
 mainDiv.style.backgroundColor = 'orange';
 
@@ -17,15 +17,41 @@ table.appendChild(tableHead);
 table.appendChild(tableBody);
 
 
-for (let i = 0; i < 100; i++) {
-    const tr = document.createElement('tr');
+fetch('http://localhost:5000/user').then((response) => {
+	return response.json();
+}).then( (users) => {
+	console.log(users);
 
-    tableBody.appendChild(tr);
+    for (let user of users) {
+        const tr = document.createElement('tr');
+    
+        tableBody.appendChild(tr);
+    
+       
 
-    for (let j = 0; j < 20; j++) {
-        const td = document.createElement('td');
-        td.innerHTML = "Piyush";
-        tr.appendChild(td);
-
+        for (let key in user) {
+            const td = document.createElement('td');
+            td.innerHTML = user[key]
+            tr.appendChild(td);
+    
+        }
     }
-}
+
+    const tr = document.createElement('tr');
+    
+    tableHead.appendChild(tr);
+
+    for (let key in users[0]) {
+        const th = document.createElement('th');
+        th.innerHTML = key
+        tableHead.appendChild(th);
+    }
+
+
+
+
+}).catch( (err) => {
+	console.warn('Something went wrong.', err);
+});
+
+
